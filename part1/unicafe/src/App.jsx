@@ -8,7 +8,9 @@ const Statistics = ({ good, neutral, bad }) => {
   const totalCount = good + neutral + bad;
   const percentage = (good * 100) / totalCount;
   const average = (good * 1 + neutral * 0 + bad * -1) / totalCount;
-  return (
+  return totalCount === 0 ? (
+    <div>No feedback given</div>
+  ) : (
     <div>
       <p>good {good}</p>
       <p>neutral {neutral}</p>

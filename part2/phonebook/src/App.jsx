@@ -3,7 +3,7 @@ import axios from 'axios';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
-import { getAll, create } from './services/persons';
+import { getAll, create, deleteId } from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -45,6 +45,14 @@ const App = () => {
     setsearchFilter(event.target.value);
   };
 
+  const handleDelete = (personToDelete) => {
+    if (!confirm(`Delete ${personToDelete.name}?`)) {
+      return;
+    }
+    deleteId(personToDelete.id);
+    setPersons(persons.filter((person) => person.id !== personToDelete.id));
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -61,7 +69,11 @@ const App = () => {
         handleSubmitClick={handleSubmitClick}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} searchFilter={searchFilter} />
+      <Persons
+        persons={persons}
+        searchFilter={searchFilter}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

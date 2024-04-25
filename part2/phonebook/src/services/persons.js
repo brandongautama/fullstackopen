@@ -12,4 +12,8 @@ const create = (newPerson) => {
     .then((response) => response.data);
 };
 
-export { getAll, create };
+const deleteId = (id) => {
+  return axios.delete(`http://localhost:3001/persons/${id}`);
+};
+
+export { getAll, create, deleteId };

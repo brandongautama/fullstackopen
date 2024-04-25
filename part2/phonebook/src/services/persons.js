@@ -1,19 +1,22 @@
 import axios from 'axios';
+const baseUrl = 'http://localhost:3001/persons';
 
 const getAll = () => {
-  return axios
-    .get('http://localhost:3001/persons')
-    .then((response) => response.data);
+  return axios.get(baseUrl).then((response) => response.data);
 };
 
 const create = (newPerson) => {
-  return axios
-    .post('http://localhost:3001/persons', newPerson)
-    .then((response) => response.data);
+  return axios.post(baseUrl, newPerson).then((response) => response.data);
 };
 
 const deleteId = (id) => {
-  return axios.delete(`http://localhost:3001/persons/${id}`);
+  return axios.delete(`${baseUrl}/${id}`);
 };
 
-export { getAll, create, deleteId };
+const put = (person) => {
+  return axios
+    .put(`${baseUrl}/${person.id}`, person)
+    .then((response) => response.data);
+};
+
+export { getAll, create, deleteId, put };

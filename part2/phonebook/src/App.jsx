@@ -3,7 +3,7 @@ import axios from 'axios';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
-import { getAll, create, deleteId } from './services/persons';
+import { getAll, create, deleteId, put } from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -28,8 +28,30 @@ const App = () => {
 
   const handleSubmitClick = (event) => {
     event.preventDefault();
-    if (persons.map((person) => person.name).includes(newName)) {
-      alert(`${newName} is already added to phonebook`);
+    const existingPerson = persons.filter((person) => person.name === newName);
+    if (existingPerson.length !== 0) {
+      if (
+        confirm(
+          `${newName} is already added to phonebook, replace old number with a new one?`
+        )
+      ) {
+        const newPerson = {
+          name: newName,
+          number: newNumber,
+          id: existingPerson[0].id,
+        };
+        put(newPerson).then((newPersonFromDB) => {
+          setPersons(
+            persons.map((person) => {
+              return person.id === newPersonFromDB.id
+                ? newPersonFromDB
+                : person;
+            })
+          );
+        });
+      }
+      setNewName('');
+      setNewNumber('');
       return;
     }
     const newPerson = { name: newName, number: newNumber };

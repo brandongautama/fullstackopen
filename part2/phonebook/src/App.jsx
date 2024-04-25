@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import Filter from './Filter';
+import PersonForm from './PersonForm';
+import Persons from './Persons';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,7 +12,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
-  const [searchName, setSearchName] = useState('');
+  const [searchFilter, setsearchFilter] = useState('');
 
   const handleNameInputChange = (event) => {
     setNewName(event.target.value);
@@ -30,41 +33,27 @@ const App = () => {
     setNewNumber('');
   };
 
-  const handleNameSearch = (event) => {
-    setSearchName(event.target.value);
+  const handleSearchFilter = (event) => {
+    setsearchFilter(event.target.value);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <label>filter shown with </label>
-      <input value={searchName} onChange={handleNameSearch} />
-      <form>
-        <h2>add a new</h2>
-        <div>
-          name: <input value={newName} onChange={handleNameInputChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberInputChange} />
-        </div>
-        <div>
-          <button type='submit' onClick={handleSubmitClick}>
-            add
-          </button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        {persons
-          .filter((person) =>
-            person.name.toLowerCase().startsWith(searchName.toLowerCase())
-          )
-          .map((person) => (
-            <p key={person.name}>
-              {person.name} {person.number}
-            </p>
-          ))}
-      </div>
+      <Filter
+        searchFilter={searchFilter}
+        handleSearchFilter={handleSearchFilter}
+      />
+      <h3>add a new</h3>
+      <PersonForm
+        newName={newName}
+        handleNameInputChange={handleNameInputChange}
+        newNumber={newNumber}
+        handleNumberInputChange={handleNumberInputChange}
+        handleSubmitClick={handleSubmitClick}
+      />
+      <h3>Numbers</h3>
+      <Persons persons={persons} searchFilter={searchFilter} />
     </div>
   );
 };

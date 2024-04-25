@@ -33,9 +33,13 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
       return;
     }
-    setPersons([...persons, { name: newName, number: newNumber }]);
-    setNewName('');
-    setNewNumber('');
+    const newPerson = { name: newName, number: newNumber };
+
+    axios.post('http://localhost:3001/persons', newPerson).then((response) => {
+      setPersons(persons.concat(response.data));
+      setNewName('');
+      setNewNumber('');
+    });
   };
 
   const handleSearchFilter = (event) => {

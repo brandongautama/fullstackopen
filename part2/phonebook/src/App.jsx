@@ -10,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchFilter, setsearchFilter] = useState('');
+  const [newPersonMessage, setNewPersonMessage] = useState('');
 
   const hook = () => {
     console.log('effect');
@@ -48,6 +49,10 @@ const App = () => {
                 : person;
             })
           );
+          setNewPersonMessage(`Changed ${newPersonFromDB.name}`);
+          setTimeout(() => {
+            setNewPersonMessage('');
+          }, 5000);
         });
       }
       setNewName('');
@@ -60,6 +65,10 @@ const App = () => {
       setPersons(persons.concat(newPersonFromDB));
       setNewName('');
       setNewNumber('');
+      setNewPersonMessage(`Added ${newPersonFromDB.name}`);
+      setTimeout(() => {
+        setNewPersonMessage('');
+      }, 5000);
     });
   };
 
@@ -78,6 +87,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div style={{ border: 'solid' }}>{newPersonMessage}</div>
       <Filter
         searchFilter={searchFilter}
         handleSearchFilter={handleSearchFilter}

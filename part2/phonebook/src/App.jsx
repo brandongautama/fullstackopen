@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchFilter, setsearchFilter] = useState('');
   const [newPersonMessage, setNewPersonMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const hook = () => {
     console.log('effect');
@@ -41,19 +42,28 @@ const App = () => {
           number: newNumber,
           id: existingPerson[0].id,
         };
-        put(newPerson).then((newPersonFromDB) => {
-          setPersons(
-            persons.map((person) => {
-              return person.id === newPersonFromDB.id
-                ? newPersonFromDB
-                : person;
-            })
-          );
-          setNewPersonMessage(`Changed ${newPersonFromDB.name}`);
-          setTimeout(() => {
-            setNewPersonMessage('');
-          }, 5000);
-        });
+        put(newPerson)
+          .then((newPersonFromDB) => {
+            setPersons(
+              persons.map((person) => {
+                return person.id === newPersonFromDB.id
+                  ? newPersonFromDB
+                  : person;
+              })
+            );
+            setNewPersonMessage(`Changed ${newPersonFromDB.name}`);
+            setTimeout(() => {
+              setNewPersonMessage('');
+            }, 5000);
+          })
+          .catch((error) => {
+            setErrorMessage(
+              `${newPerson.name} was already removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage('');
+            }, 5000);
+          });
       }
       setNewName('');
       setNewNumber('');
@@ -87,7 +97,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div style={{ border: 'solid' }}>{newPersonMessage}</div>
+      {newPersonMessage !== '' && (
+        <div style={{ border: 'solid' }}>{newPersonMessage}</div>
+      )}
+      {errorMessage !== '' && (
+        <div style={{ border: 'solid red' }}>{errorMessage}</div>
+      )}
       <Filter
         searchFilter={searchFilter}
         handleSearchFilter={handleSearchFilter}

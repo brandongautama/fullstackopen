@@ -3,6 +3,7 @@ import axios from 'axios';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
+import { getAll, create } from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,9 +13,7 @@ const App = () => {
 
   const hook = () => {
     console.log('effect');
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => setPersons(response.data));
+    getAll().then((persons) => setPersons(persons));
   };
 
   useEffect(hook, []);
@@ -35,8 +34,8 @@ const App = () => {
     }
     const newPerson = { name: newName, number: newNumber };
 
-    axios.post('http://localhost:3001/persons', newPerson).then((response) => {
-      setPersons(persons.concat(response.data));
+    create(newPerson).then((newPersonFromDB) => {
+      setPersons(persons.concat(newPersonFromDB));
       setNewName('');
       setNewNumber('');
     });

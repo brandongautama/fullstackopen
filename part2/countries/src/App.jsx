@@ -3,6 +3,39 @@ import { getAll } from './services/countries';
 
 import './App.css';
 
+const Country = ({ country }) => {
+  return (
+    <div>
+      <h1>{country.name.common}</h1>
+      <p>capital {country.capital}</p>
+      <p>area {country.area}</p>
+      <h3>languages:</h3>
+      <ul>
+        {Object.values(country.languages).map(language => (
+          <li key={language}>{language}</li>
+        ))}
+      </ul>
+      <img className='country-flag' src={country.flags.png} />
+    </div>
+  );
+};
+
+const CountryToggle = ({ country }) => {
+  const [showCountry, setShowCountry] = useState(false);
+
+  return (
+    <div>
+      <h2>
+        {country.name.common}
+        <button onClick={() => setShowCountry(!showCountry)}>
+          {showCountry ? 'hide' : 'show'}
+        </button>
+      </h2>
+      {showCountry && <Country country={country} />}
+    </div>
+  );
+};
+
 const Countries = ({ countries, searchName }) => {
   // no search string
   if (searchName === '') {
@@ -21,30 +54,16 @@ const Countries = ({ countries, searchName }) => {
   // display list of countries if > 1
   if (filteredCountries.length > 1 && filteredCountries.length <= 10) {
     return (
-      <ul>
-        {filteredCountries.map(c => (
-          <li key={c.area}>{c.name.common}</li>
+      <>
+        {filteredCountries.map(country => (
+          <CountryToggle key={country.area} country={country} />
         ))}
-      </ul>
+      </>
     );
   }
 
   // display country details
-  const country = filteredCountries[0];
-  return (
-    <div>
-      <h1>{country.name.common}</h1>
-      <p>capital {country.capital}</p>
-      <p>area {country.area}</p>
-      <h3>languages:</h3>
-      <ul>
-        {Object.values(country.languages).map(language => (
-          <li key={language}>{language}</li>
-        ))}
-      </ul>
-      <img className='country-flag' src={country.flags.png} />
-    </div>
-  );
+  return <Country country={filteredCountries[0]} />;
 };
 
 const App = () => {

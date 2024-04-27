@@ -43,6 +43,18 @@ app.get('/api/persons/:id', (request, response) => {
   response.json(person);
 });
 
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find(person => person.id === id);
+  if (!person) {
+    console.log(`Person ${id} not found`);
+    response.status(404).end();
+    return;
+  }
+  persons = persons.filter(person => person.id !== id);
+  response.status(204).end();
+});
+
 app.get('/info', (request, response) => {
   const phonebookInfo = `<div>Phoneboook has info for ${persons.length} people</div><br>`;
   const infoResponse = `<div>${new Date()}</div>`;

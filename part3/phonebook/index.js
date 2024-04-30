@@ -138,9 +138,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
 });
 
 app.get('/info', (request, response) => {
-  const phonebookInfo = `<div>Phoneboook has info for ${persons.length} people</div><br>`;
-  const infoResponse = `<div>${new Date()}</div>`;
-  response.send(phonebookInfo + infoResponse);
+  Person.find({}).then(persons => {
+    const phonebookInfo = `<div>Phoneboook has info for ${persons.length} people</div><br>`;
+    const infoResponse = `<div>${new Date()}</div>`;
+    response.send(phonebookInfo + infoResponse);
+  });
 });
 
 const unknownEndpoint = (request, response) => {

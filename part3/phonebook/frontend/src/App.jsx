@@ -15,22 +15,22 @@ const App = () => {
 
   const hook = () => {
     console.log('effect');
-    getAll().then((persons) => setPersons(persons));
+    getAll().then(persons => setPersons(persons));
   };
 
   useEffect(hook, []);
 
-  const handleNameInputChange = (event) => {
+  const handleNameInputChange = event => {
     setNewName(event.target.value);
   };
 
-  const handleNumberInputChange = (event) => {
+  const handleNumberInputChange = event => {
     setNewNumber(event.target.value);
   };
 
-  const handleSubmitClick = (event) => {
+  const handleSubmitClick = event => {
     event.preventDefault();
-    const existingPerson = persons.filter((person) => person.name === newName);
+    const existingPerson = persons.filter(person => person.name === newName);
     if (existingPerson.length !== 0) {
       if (
         confirm(
@@ -43,9 +43,9 @@ const App = () => {
           id: existingPerson[0].id,
         };
         put(newPerson)
-          .then((newPersonFromDB) => {
+          .then(newPersonFromDB => {
             setPersons(
-              persons.map((person) => {
+              persons.map(person => {
                 return person.id === newPersonFromDB.id
                   ? newPersonFromDB
                   : person;
@@ -56,7 +56,7 @@ const App = () => {
               setNewPersonMessage('');
             }, 5000);
           })
-          .catch((error) => {
+          .catch(error => {
             setErrorMessage(
               `${newPerson.name} was already removed from server`
             );
@@ -71,27 +71,35 @@ const App = () => {
     }
     const newPerson = { name: newName, number: newNumber };
 
-    create(newPerson).then((newPersonFromDB) => {
-      setPersons(persons.concat(newPersonFromDB));
-      setNewName('');
-      setNewNumber('');
-      setNewPersonMessage(`Added ${newPersonFromDB.name}`);
-      setTimeout(() => {
-        setNewPersonMessage('');
-      }, 5000);
-    });
+    create(newPerson)
+      .then(newPersonFromDB => {
+        setPersons(persons.concat(newPersonFromDB));
+        setNewName('');
+        setNewNumber('');
+        setNewPersonMessage(`Added ${newPersonFromDB.name}`);
+        setTimeout(() => {
+          setNewPersonMessage('');
+        }, 5000);
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 5000);
+      });
   };
 
-  const handleSearchFilter = (event) => {
+  const handleSearchFilter = event => {
     setsearchFilter(event.target.value);
   };
 
-  const handleDelete = (personToDelete) => {
+  const handleDelete = personToDelete => {
     if (!confirm(`Delete ${personToDelete.name}?`)) {
       return;
     }
     deleteId(personToDelete.id);
-    setPersons(persons.filter((person) => person.id !== personToDelete.id));
+    setPersons(persons.filter(person => person.id !== personToDelete.id));
   };
 
   return (

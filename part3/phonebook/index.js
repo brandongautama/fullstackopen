@@ -67,25 +67,33 @@ app.post('/api/persons', (request, response) => {
     });
   }
 
-  if (
-    persons
-      .map(person => person.name.toLowerCase())
-      .includes(body.name.toLowerCase())
-  ) {
-    return response.status(400).json({
-      error: 'name must be unique',
-    });
-  }
+  //   if (
+  //     persons
+  //       .map(person => person.name.toLowerCase())
+  //       .includes(body.name.toLowerCase())
+  //   ) {
+  //     return response.status(400).json({
+  //       error: 'name must be unique',
+  //     });
+  //   }
 
-  const person = {
+  //   const person = {
+  //     name: body.name,
+  //     number: body.number,
+  //     id: generateId(),
+  //   };
+
+  //   persons = persons.concat(person);
+
+  //   response.json(person);
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  };
+  });
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then(savedPerson => {
+    response.json(savedPerson);
+  });
 });
 
 app.delete('/api/persons/:id', (request, response) => {

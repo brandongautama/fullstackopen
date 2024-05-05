@@ -1,0 +1,24 @@
+GET http://localhost:3001/api/blogs
+
+###
+GET http://localhost:3003/api/blogs/4
+
+### 
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+    "title": "newTitle", "author": "newAuthor", "url": "newUrl", "likes": 3
+}
+
+### 
+DELETE http://localhost:3001/api/blogs/3
+
+### 
+PUT http://localhost:3001/api/persons/663044f2f204880ecd6f183a 
+Content-Type: application/json
+
+{
+"name": "Anna", "number": "123"
+
+}

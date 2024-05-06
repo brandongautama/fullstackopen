@@ -8,10 +8,11 @@ const assert = require('node:assert');
 const api = supertest(app);
 
 test('blogs are returned as json', async () => {
-  await api
+  const response = await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/);
+  response.body.forEach(blog => assert('id' in blog));
 });
 
 test('there are two blogs', async () => {

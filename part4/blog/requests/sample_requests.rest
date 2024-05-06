@@ -54,13 +54,17 @@ Content-Type: application/json
 ### 
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NjM4ODMzNzlkZWMyNzNhYjliNDQzOTMiLCJpYXQiOjE3MTQ5Nzk2NDYsImV4cCI6MTcxNDk4MzI0Nn0.Byr5BLf-dsWDf7cJjeIP26qElXrksypS2Rbck5mY5TU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2Mzg4NWY2N2Y2YWU5NjNmMDZiNzdkOCIsImlhdCI6MTcxNDk4MDk0NCwiZXhwIjoxNzE0OTg0NTQ0fQ.1jdbhjsUdv8iw-O-q5MmqLeqH-8A9DaDFcdPO8h6fe8
 
 {
     "title": "newTitle", "author": "newAuthor", "url": "newUrl", "likes": 3
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/663884aacf4ed32562a5fc54
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NjM4ODMzNzlkZWMyNzNhYjliNDQzOTMiLCJpYXQiOjE3MTQ5Nzk2NDYsImV4cCI6MTcxNDk4MzI0Nn0.Byr5BLf-dsWDf7cJjeIP26qElXrksypS2Rbck5mY5TUs
+DELETE http://localhost:3003/api/blogs/6638855e93209ec0de99a862
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2NjM4ODMzNzlkZWMyNzNhYjliNDQzOTMiLCJpYXQiOjE3MTQ5Nzk2NDYsImV4cCI6MTcxNDk4MzI0Nn0.Byr5BLf-dsWDf7cJjeIP26qElXrksypS2Rbck5mY5TU
+
+###
+DELETE http://localhost:3003/api/blogs/6638855e93209ec0de99a862
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2Mzg4MGE4ODQ3Y2YxMzcyZGVkZjFmNyIsImlhdCI6MTcxNDk4MDI0OSwiZXhwIjoxNzE0OTgzODQ5fQ.avufLQtTQfDNchhCXI2Lp1NXb0gYF99l2hVQ2cc5Wxs
 

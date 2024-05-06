@@ -13,6 +13,7 @@ const blogs = [
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
+    user: '663885f67f6ae963f06b77d8',
     likes: 7,
     __v: 0,
   },
@@ -83,8 +84,14 @@ test('there are two blogs', async () => {
 test('a valid blog can be added ', async () => {
   const newBlog = blogs[2];
 
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
+
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${loginToken.body.token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
@@ -97,8 +104,14 @@ test('a valid blog can be added ', async () => {
 test('an empty likes blog can be added ', async () => {
   const { likes, ...newBlog } = blogs[2];
 
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
+
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${loginToken.body.token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/);
@@ -112,26 +125,53 @@ test('an empty likes blog can be added ', async () => {
 
 test('an empty title blog cannot be added ', async () => {
   const { title, ...newBlog } = blogs[2];
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
 
-  await api.post('/api/blogs').send(newBlog).expect(400);
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${loginToken.body.token}`)
+    .send(newBlog)
+    .expect(400);
 });
 
 test('an empty url blog cannot be added ', async () => {
   const { url, ...newBlog } = blogs[2];
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
 
-  await api.post('/api/blogs').send(newBlog).expect(400);
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${loginToken.body.token}`)
+    .send(newBlog)
+    .expect(400);
 });
 
 test('delete blog', async () => {
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
   const response = await api.get('/api/blogs');
   const blogsAtStart = response.body;
   const blogToDelete = blogsAtStart[0];
-  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `Bearer ${loginToken.body.token}`)
+    .expect(204);
   const blogsAtEnd = await api.get('/api/blogs');
   assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.length - 1);
 });
 
 test('update blog', async () => {
+  const loginToken = await api.post('/api/login').send({
+    username: 'root',
+    password: 'sekret',
+  });
   const response = await api.get('/api/blogs');
   const blogsAtStart = response.body;
   const blogToUpdate = blogsAtStart[0];

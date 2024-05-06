@@ -110,12 +110,17 @@ test('an empty likes blog can be added ', async () => {
   assert.strictEqual(response.body[2].likes, 0);
 });
 
-// test('the first note is about HTTP methods', async () => {
-//   const response = await api.get('/api/notes');
+test('an empty title blog cannot be added ', async () => {
+  const { title, ...newBlog } = blogs[2];
 
-//   const contents = response.body.map(e => e.content);
-//   assert(contents.includes('HTML is easy'));
-// });
+  await api.post('/api/blogs').send(newBlog).expect(400);
+});
+
+test('an empty url blog cannot be added ', async () => {
+  const { url, ...newBlog } = blogs[2];
+
+  await api.post('/api/blogs').send(newBlog).expect(400);
+});
 
 after(async () => {
   await mongoose.connection.close();

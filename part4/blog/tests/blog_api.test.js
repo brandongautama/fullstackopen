@@ -91,9 +91,23 @@ test('a valid blog can be added ', async () => {
 
   const response = await api.get('/api/blogs');
 
-  const contents = response.body.map(r => r.content);
+  assert.strictEqual(response.body.length, 3);
+});
+
+test('an empty likes blog can be added ', async () => {
+  const { likes, ...newBlog } = blogs[2];
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const response = await api.get('/api/blogs');
 
   assert.strictEqual(response.body.length, 3);
+
+  assert.strictEqual(response.body[2].likes, 0);
 });
 
 // test('the first note is about HTTP methods', async () => {

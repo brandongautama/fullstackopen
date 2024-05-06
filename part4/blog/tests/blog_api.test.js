@@ -122,6 +122,16 @@ test('an empty url blog cannot be added ', async () => {
   await api.post('/api/blogs').send(newBlog).expect(400);
 });
 
+test('delete blog', async () => {
+  const response = await api.get('/api/blogs');
+  const blogsAtStart = response.body;
+  const blogToDelete = blogsAtStart[0];
+  console.log(blogsAtStart);
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+  const blogsAtEnd = await api.get('/api/blogs');
+  assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.length - 1);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });

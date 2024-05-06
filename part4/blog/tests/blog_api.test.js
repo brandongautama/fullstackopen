@@ -126,10 +126,24 @@ test('delete blog', async () => {
   const response = await api.get('/api/blogs');
   const blogsAtStart = response.body;
   const blogToDelete = blogsAtStart[0];
-  console.log(blogsAtStart);
   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
   const blogsAtEnd = await api.get('/api/blogs');
   assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.length - 1);
+});
+
+test('update blog', async () => {
+  const response = await api.get('/api/blogs');
+  const blogsAtStart = response.body;
+  const blogToUpdate = blogsAtStart[0];
+  blogToUpdate.likes = 100;
+  // console.log(blogToUpdate);
+  const updatedBlog = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogToUpdate)
+    .expect(200);
+  assert.strictEqual(updatedBlog.body.likes, 100);
+  const blogsAtEnd = await api.get('/api/blogs');
+  assert.strictEqual(blogsAtEnd.body.length, 2);
 });
 
 after(async () => {

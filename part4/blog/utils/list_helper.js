@@ -29,9 +29,23 @@ const mostBlogs = blogs => {
   );
 };
 
+const mostLikes = blogs => {
+  const groupedByAuthors = _.groupBy(blogs, 'author');
+  const mapped = Object.entries(groupedByAuthors).map((author, items) => {
+    return {
+      author: author[0],
+      likes: author[1].reduce((sum, item) => sum + item.likes, 0),
+    };
+  });
+  return mapped.reduce((currentMax, author) =>
+    currentMax && currentMax.likes > author.likes ? currentMax : author
+  );
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };

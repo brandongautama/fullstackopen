@@ -65,7 +65,7 @@ test('renders all info when view button is clicked', async () => {
   expect(likes).toBeDefined();
 });
 
-test('renders all info when view button is clicked', async () => {
+test('verify like button is clicked', async () => {
   const blog = {
     title: 'title',
     author: 'author',

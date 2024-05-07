@@ -9,7 +9,10 @@ const Blog = ({ blog, user, deleteBlog, handleLikes }) => {
     <div className='blog'>
       <p>
         {blog.title} {blog.author}{' '}
-        <button onClick={() => setShowDetails(!showDetails)}>
+        <button
+          id='show-details-button'
+          onClick={() => setShowDetails(!showDetails)}
+        >
           {' '}
           {showDetails ? 'hide' : 'view'}{' '}
         </button>
@@ -19,13 +22,18 @@ const Blog = ({ blog, user, deleteBlog, handleLikes }) => {
           <p>{blog.url}</p>
           <p>
             {likes}{' '}
-            <button onClick={() => handleLikes(blog, likes, setLikes)}>
+            <button
+              id='like-button'
+              onClick={() => handleLikes(blog, likes, setLikes)}
+            >
               like
             </button>
           </p>
           <p>{blog.user && blog.user.name}</p>
           {blog.user && blog.user.username === user.username && (
-            <button onClick={() => deleteBlog(blog.id)}>remove</button>
+            <button id='remove-button' onClick={() => deleteBlog(blog.id)}>
+              remove
+            </button>
           )}
         </>
       )}

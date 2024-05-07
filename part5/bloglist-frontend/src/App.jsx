@@ -27,6 +27,20 @@ const App = () => {
     }
   }, []);
 
+  const handleLikes = async (blog, likes, setLikes) => {
+    const updatedBlog = await blogService.update(blog.id, {
+      id: blog.id,
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: likes + 1,
+    });
+    setLikes(updatedBlog.likes);
+    blog.likes = updatedBlog.likes;
+    console.log('updated blog', updatedBlog);
+    console.log(blog.user);
+  };
+
   const sortBlogs = () => {
     blogs.sort((a, b) => (a.likes > b.likes ? -1 : 1));
   };
@@ -69,7 +83,13 @@ const App = () => {
       )}
       {user !== null &&
         blogs.map(blog => (
-          <Blog key={blog.id} blog={blog} user={user} deleteBlog={deleteBlog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            deleteBlog={deleteBlog}
+            handleLikes={handleLikes}
+          />
         ))}
     </div>
   );

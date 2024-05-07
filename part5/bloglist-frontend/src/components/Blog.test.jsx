@@ -58,8 +58,54 @@ test('renders all info when view button is clicked', async () => {
   expect(author).toBeDefined();
 
   const url = screen.queryByText('url', { exact: false });
-  expect(title).toBeDefined();
+  expect(url).toBeDefined();
 
   const likes = screen.queryByText(100, { exact: false });
+  expect(likes).toBeDefined();
+});
+
+test('renders all info when view button is clicked', async () => {
+  const blog = {
+    title: 'title',
+    author: 'author',
+    url: 'url',
+    likes: 100,
+  };
+
+  const mockHandler = vi.fn();
+
+  const user = {
+    username: 'username',
+  };
+  const deleteBlog = () => null;
+  render(
+    <Blog
+      blog={blog}
+      user={user}
+      deleteBlog={deleteBlog}
+      handleLikes={mockHandler}
+    />
+  );
+
+  const usereventsetup = userEvent.setup();
+  const button = screen.getByText('view');
+  await usereventsetup.click(button);
+
+  const likesetup = userEvent.setup();
+  const likeButton = screen.getByText('like');
+  await likesetup.click(likeButton);
+  await likesetup.click(likeButton);
+  expect(mockHandler.mock.calls).toHaveLength(2);
+
+  const title = screen.getByText('title', { exact: false });
   expect(title).toBeDefined();
+
+  const author = screen.getByText('author', { exact: false });
+  expect(author).toBeDefined();
+
+  const url = screen.queryByText('url', { exact: false });
+  expect(url).toBeDefined();
+
+  const likes = screen.queryByText(100, { exact: false });
+  expect(likes).toBeDefined();
 });

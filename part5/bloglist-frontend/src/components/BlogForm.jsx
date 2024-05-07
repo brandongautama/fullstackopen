@@ -1,20 +1,25 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
 import Notification from './Notification';
-const BlogForm = ({ blogs, setBlogs }) => {
+const BlogForm = ({
+  blogs,
+  setBlogs,
+  setNotificationMessage,
+  togglableRef,
+}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const [notification, setNotification] = useState(null);
 
   const addBlog = async event => {
     event.preventDefault();
     try {
       const addedBlog = await blogService.create({ title, author, url });
       setBlogs([...blogs, addedBlog]);
-      setNotification(`Added ${addedBlog.title} by ${addedBlog.author}`);
+      togglableRef.current.toggleVisibility();
+      setNotificationMessage(`Added ${addedBlog.title} by ${addedBlog.author}`);
       setTimeout(() => {
-        setNotification(null);
+        setNotificationMessage(null);
       }, 5000);
       setTitle('');
       setAuthor('');
@@ -25,9 +30,6 @@ const BlogForm = ({ blogs, setBlogs }) => {
   };
   return (
     <div>
-      {notification && (
-        <Notification message={notification} className='success' />
-      )}
       <form onSubmit={addBlog}>
         <div>
           title

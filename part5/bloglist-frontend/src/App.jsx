@@ -2,14 +2,8 @@ import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null;
-  }
-
-  return <div className='error'>{message}</div>;
-};
+import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
 
 const App = () => {
   const [username, setUsername] = useState('');
@@ -37,6 +31,7 @@ const App = () => {
       const user = await loginService.login({ username, password });
       window.localStorage.setItem('user', JSON.stringify(user));
       console.log(user);
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -51,6 +46,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('user');
+    blogService.setToken(null);
     setUser(null);
   };
 
@@ -89,8 +85,9 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} className='error' />
       {user === null ? loginForm() : logoutButton()}
+      {user !== null && <BlogForm blogs={blogs} setBlogs={setBlogs} />}
       {user !== null && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
     </div>
   );

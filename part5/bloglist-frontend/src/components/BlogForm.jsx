@@ -5,6 +5,7 @@ const BlogForm = ({
   blogs,
   setBlogs,
   setNotificationMessage,
+  createBlog,
   togglableRef,
 }) => {
   const [title, setTitle] = useState('');
@@ -14,7 +15,7 @@ const BlogForm = ({
   const addBlog = async event => {
     event.preventDefault();
     try {
-      const addedBlog = await blogService.create({ title, author, url });
+      const addedBlog = await createBlog({ title, author, url });
       setBlogs([...blogs, addedBlog]);
       togglableRef.current.toggleVisibility();
       setNotificationMessage(`Added ${addedBlog.title} by ${addedBlog.author}`);
@@ -28,6 +29,7 @@ const BlogForm = ({
       console.log(exception);
     }
   };
+
   return (
     <div>
       <form onSubmit={addBlog}>
@@ -35,6 +37,7 @@ const BlogForm = ({
           title
           <input
             value={title}
+            placeholder='title'
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
@@ -42,12 +45,17 @@ const BlogForm = ({
           author
           <input
             value={author}
+            placeholder='author'
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
           url
-          <input value={url} onChange={({ target }) => setUrl(target.value)} />
+          <input
+            value={url}
+            placeholder='url'
+            onChange={({ target }) => setUrl(target.value)}
+          />
         </div>
         <button type='submit'>create</button>
       </form>

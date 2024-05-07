@@ -52,6 +52,11 @@ const App = () => {
     setBlogs(updatedBlogs);
   };
 
+  const createBlog = async newBlog => {
+    const addedBlog = await blogService.create(newBlog);
+    return addedBlog;
+  };
+
   return (
     <div>
       <h1>blogs</h1>
@@ -77,6 +82,7 @@ const App = () => {
             blogs={blogs}
             setBlogs={setBlogs}
             setNotificationMessage={setNotificationMessage}
+            createBlog={createBlog}
             togglableRef={blogFormRef}
           />
         </Togglable>

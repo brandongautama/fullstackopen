@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Blog from './Blog';
+import BlogForm from './BlogForm';
 
 test('renders title and author only by default', () => {
   const blog = {
@@ -108,4 +109,35 @@ test('renders all info when view button is clicked', async () => {
 
   const likes = screen.queryByText(100, { exact: false });
   expect(likes).toBeDefined();
+});
+
+test('blog form', async () => {
+  const createBlog = vi.fn();
+  const user = userEvent.setup();
+
+  render(
+    <BlogForm
+      blogs={[]}
+      setBlogs={() => null}
+      setNotificationMessage={() => null}
+      createBlog={createBlog}
+      togglableRef={{}}
+    />
+  );
+
+  const inputTitle = screen.getByPlaceholderText('title');
+  const inputAuthor = screen.getByPlaceholderText('author');
+  const inputUrl = screen.getByPlaceholderText('url');
+  const sendButton = screen.getByText('create');
+
+  await user.type(inputTitle, 'newTitle');
+  await user.type(inputAuthor, 'newAuthor');
+  await user.type(inputUrl, 'newUrl');
+  await user.click(sendButton);
+
+  expect(createBlog.mock.calls).toHaveLength(1);
+  console.log(createBlog.mock.calls);
+  expect(createBlog.mock.calls[0][0].title).toBe('newTitle');
+  expect(createBlog.mock.calls[0][0].author).toBe('newAuthor');
+  expect(createBlog.mock.calls[0][0].url).toBe('newUrl');
 });

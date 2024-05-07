@@ -27,6 +27,17 @@ const App = () => {
     }
   }, []);
 
+  const sortBlogs = () => {
+    blogs.sort((a, b) => (a.likes > b.likes ? -1 : 1));
+  };
+  sortBlogs();
+
+  const deleteBlog = id => {
+    blogService.remove(id);
+    const updatedBlogs = blogs.filter(blog => blog.id !== id);
+    setBlogs(updatedBlogs);
+  };
+
   return (
     <div>
       <h1>blogs</h1>
@@ -56,7 +67,10 @@ const App = () => {
           />
         </Togglable>
       )}
-      {user !== null && blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+      {user !== null &&
+        blogs.map(blog => (
+          <Blog key={blog.id} blog={blog} user={user} deleteBlog={deleteBlog} />
+        ))}
     </div>
   );
 };

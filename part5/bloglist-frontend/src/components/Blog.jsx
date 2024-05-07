@@ -10,10 +10,12 @@ const handleLikes = async (blog, likes, setLikes) => {
     likes: likes + 1,
   });
   setLikes(updatedBlog.likes);
+  blog.likes = updatedBlog.likes;
   console.log('updated blog', updatedBlog);
+  console.log(blog.user);
 };
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
@@ -36,6 +38,9 @@ const Blog = ({ blog }) => {
             </button>
           </p>
           <p>{blog.user && blog.user.name}</p>
+          {blog.user && blog.user.username === user.username && (
+            <button onClick={() => deleteBlog(blog.id)}>remove</button>
+          )}
         </>
       )}
     </div>

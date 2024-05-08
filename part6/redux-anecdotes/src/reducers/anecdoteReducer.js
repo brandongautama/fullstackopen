@@ -35,7 +35,7 @@ const anecdotesSlice = createSlice({
       return state.map(a => (a.id !== id ? a : changedAnecdote));
     },
     createAnecdote(state, action) {
-      return [...state, { ...action.payload, id: getId(), votes: 0 }];
+      return [...state, { content: action.payload, id: getId(), votes: 0 }];
     },
   },
 });

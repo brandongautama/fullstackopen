@@ -10,7 +10,7 @@ const AnecdoteList = () => {
   anecdotes.sort((a, b) => (a.votes > b.votes ? -1 : 1));
 
   const vote = id => {
-    return dispatch(addVote(id));
+    return dispatch(addVote({ id }));
   };
 
   console.log('List render');

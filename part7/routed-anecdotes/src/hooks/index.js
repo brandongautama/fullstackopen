@@ -5,9 +5,13 @@ export const useField = type => {
   const onChange = event => {
     setValue(event.target.value);
   };
+  const clear = () => {
+    setValue('');
+  };
   return {
     type,
     value,
     onChange,
+    clear,
   };
 };

@@ -38,7 +38,9 @@ const useCountry = name => {
         setCountry({ found: false });
       }
     };
-    fetchData();
+    if (name) {
+      fetchData();
+    }
   }, [name]);
 
   return country;

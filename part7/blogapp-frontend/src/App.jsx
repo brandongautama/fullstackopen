@@ -10,6 +10,7 @@ import Blog from './components/Blog';
 import NewBlog from './components/NewBlog';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+import Users from './components/Users';
 import { setNotification } from './reducers/notificationReducer';
 import { initializeBlogs, setBlogs } from './reducers/blogReducer';
 import { setUser } from './reducers/userReducer';
@@ -117,6 +118,7 @@ const App = () => {
           handleDelete={handleDelete}
         />
       ))}
+      <Users />
     </div>
   );
 };

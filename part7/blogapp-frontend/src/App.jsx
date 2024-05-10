@@ -64,7 +64,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <Router>
         <div>
           <Link to='/'>blogs</Link>

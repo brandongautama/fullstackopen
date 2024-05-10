@@ -16,7 +16,7 @@ const Users = () => {
     <div>
       <h2>Users</h2>
       <div>
-        <table>
+        <table className='table striped'>
           <thead>
             <tr>
               <th scope='col'>name</th>

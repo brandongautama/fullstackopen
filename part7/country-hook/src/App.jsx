@@ -32,7 +32,7 @@ const useCountry = name => {
           },
           found: true,
         };
-        console.log(response.data);
+        // console.log(response.data);
         setCountry(fetchedCountry);
       } catch (exception) {
         setCountry({ found: false });
@@ -47,7 +47,7 @@ const useCountry = name => {
 };
 
 const Country = ({ country }) => {
-  console.log(country);
+  // console.log(country);
   if (!country) {
     return null;
   }
@@ -74,6 +74,7 @@ const App = () => {
   const nameInput = useField('text');
   const [name, setName] = useState('');
   const country = useCountry(name);
+  console.log(name, country);
 
   const fetch = e => {
     e.preventDefault();

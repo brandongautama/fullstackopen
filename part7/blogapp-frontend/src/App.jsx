@@ -13,6 +13,7 @@ import User from './components/User';
 import Blogs from './components/Blogs';
 import { setNotification } from './reducers/notificationReducer';
 import { setUser } from './reducers/userReducer';
+import BlogDetails from './components/BlogDetails';
 
 const App = () => {
   // const [user, setUser] = useState(null);
@@ -77,6 +78,7 @@ const App = () => {
 
         <Routes>
           <Route path='/' element={<Blogs notify={notify} />} />
+          <Route path='/blogs/:id' element={<BlogDetails notify={notify} />} />
           <Route path='/users' element={<Users />} />
           <Route path='/users/:id' element={<User />} />
         </Routes>

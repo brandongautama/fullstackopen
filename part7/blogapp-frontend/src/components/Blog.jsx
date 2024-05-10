@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import storage from '../services/storage';
 
 const Blog = ({ blog, handleVote, handleDelete }) => {
@@ -20,7 +21,7 @@ const Blog = ({ blog, handleVote, handleDelete }) => {
 
   return (
     <div style={style} className='blog'>
-      {blog.title} by {blog.author}
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> by {blog.author}
       <button style={{ marginLeft: 3 }} onClick={() => setVisible(!visible)}>
         {visible ? 'hide' : 'view'}
       </button>

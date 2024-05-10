@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import usersService from '../services/users';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeUsers } from '../reducers/usersReducer';
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
+  const users = useSelector(store => store.users);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    usersService.getAll().then(allUsers => setUsers(allUsers));
-  });
+    dispatch(initializeUsers());
+  }, []);
 
   return (
     <div>
@@ -20,14 +24,17 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => {
-              return (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.blogs.length}</td>
-                </tr>
-              );
-            })}
+            {users &&
+              users.map(user => {
+                return (
+                  <tr key={user.id}>
+                    <td>
+                      <Link to={`/users/${user.id}`}>{user.name}</Link>
+                    </td>
+                    <td>{user.blogs.length}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

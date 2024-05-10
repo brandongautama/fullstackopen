@@ -5,14 +5,12 @@ const notificationSlice = createSlice({
   initialState: null,
   reducers: {
     setNotification(state, action) {
-      console.log('inside slice');
       return action.payload;
     },
   },
 });
 
 export const setNotification = notification => {
-  console.log('inside thunk');
   return dispatch => {
     dispatch(notificationSlice.actions.setNotification(notification));
   };

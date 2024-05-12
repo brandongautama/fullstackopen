@@ -1,5 +1,6 @@
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
+const { v1: uuid } = require('uuid');
 
 let authors = [
   {
@@ -116,8 +117,13 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(title: String!, author: String!, published: Int, genres: [String!]!): Book
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -126,10 +132,13 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      if (!args.author) {
-        return books;
-      }
-      return books.filter(book => book.author === args.author);
+      const authorFilter = args.author
+        ? books.filter(book => book.author === args.author)
+        : books;
+      const genreFilter = args.genre
+        ? authorFilter.filter(book => book.genres.includes(args.genre))
+        : authorFilter;
+      return genreFilter;
     },
     allAuthors: () => authors,
   },
@@ -137,6 +146,32 @@ const resolvers = {
   Author: {
     bookCount: root => {
       return books.filter(book => book.author === root.name).length;
+    },
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      if (!authors.find(author => author.name === book.author)) {
+        const author = {
+          name: book.author,
+        };
+        authors = authors.concat(author);
+      }
+      return book;
+    },
+
+    editAuthor: (root, args) => {
+      const authorToBeUpdated = authors.find(
+        author => author.name === args.name
+      );
+      if (!authorToBeUpdated) {
+        return null;
+      }
+      const updatedAuthor = { ...authorToBeUpdated, born: args.setBornTo };
+      authors = authors.map(a => (a.name === args.name ? updatedAuthor : a));
+      return updatedAuthor;
     },
   },
 };

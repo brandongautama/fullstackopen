@@ -17,11 +17,13 @@ import LoginForm from './components/LoginForm';
 const App = () => {
   const [page, setPage] = useState('authors');
   const [errorMessage, setErrorMessage] = useState(null);
+  const [books, setBooks] = useState([]);
 
   const allAuthorsResponse = useQuery(ALL_AUTHORS_QUERY);
 
   const allBooksResponse = useQuery(ALL_BOOKS_QUERY, {
     skip: page !== 'books',
+    onCompleted: data => setBooks(data.allBooks),
   });
 
   const [createBook] = useMutation(CREATE_BOOK_MUTATION, {
@@ -62,7 +64,7 @@ const App = () => {
         editBirthyear={editBirthyear}
       />
 
-      <Books show={page === 'books'} books={allBooksResponse} />
+      <Books show={page === 'books'} books={books} />
 
       <NewBook show={page === 'add'} createBook={createBook} />
 

@@ -147,9 +147,19 @@ const resolvers = {
       const author = existingAuthor
         ? existingAuthor
         : new Author({ name: args.author });
-      await author.save();
-      const book = new Book({ ...args, author: author });
-      return book.save();
+      try {
+        await author.save();
+        const book = new Book({ ...args, author: author });
+        return book.save();
+      } catch (error) {
+        throw new GraphQLError('Saving user failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
       // books = books.concat(book);
       // if (!authors.find(author => author.name === book.author)) {
       //   const author = {
@@ -166,7 +176,17 @@ const resolvers = {
         return null;
       }
       authorToBeUpdated.born = args.setBornTo;
-      authorToBeUpdated.save();
+      try {
+        authorToBeUpdated.save();
+      } catch (error) {
+        throw new GraphQLError('Editing author failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
       return authorToBeUpdated;
     },
   },

@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import Authors from './components/Authors';
 import Books from './components/Books';
 import NewBook from './components/NewBook';
+import Notify from './components/Notify';
 
 import {
   ALL_AUTHORS_QUERY,
@@ -11,9 +12,11 @@ import {
   CREATE_BOOK_MUTATION,
   EDIT_BIRTHYEAR_MUTATION,
 } from './queries';
+import LoginForm from './components/LoginForm';
 
 const App = () => {
   const [page, setPage] = useState('authors');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const allAuthorsResponse = useQuery(ALL_AUTHORS_QUERY);
 
@@ -23,11 +26,24 @@ const App = () => {
 
   const [createBook] = useMutation(CREATE_BOOK_MUTATION, {
     refetchQueries: [{ query: ALL_BOOKS_QUERY }, { query: ALL_AUTHORS_QUERY }],
+    onError: error => {
+      setErrorMessage(error.graphQLErrors[0].message);
+    },
   });
 
   const [editBirthyear] = useMutation(EDIT_BIRTHYEAR_MUTATION, {
     refetchQueries: [{ query: ALL_AUTHORS_QUERY }],
+    onError: error => {
+      setErrorMessage(error.graphQLErrors[0].message);
+    },
   });
+
+  const notify = message => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage(null);
+    }, 5000);
+  };
 
   return (
     <div>
@@ -35,7 +51,10 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('login')}>login</button>
       </div>
+
+      <Notify errorMessage={errorMessage} />
 
       <Authors
         show={page === 'authors'}
@@ -46,6 +65,8 @@ const App = () => {
       <Books show={page === 'books'} books={allBooksResponse} />
 
       <NewBook show={page === 'add'} createBook={createBook} />
+
+      <LoginForm show={page === 'login'} setError={notify} />
     </div>
   );
 };

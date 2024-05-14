@@ -1,62 +1,16 @@
 import { useState } from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 
 import Authors from './components/Authors';
 import Books from './components/Books';
 import NewBook from './components/NewBook';
 
-const ALL_AUTHORS_QUERY = gql`
-  query {
-    allAuthors {
-      name
-      born
-      bookCount
-    }
-  }
-`;
-
-const ALL_BOOKS_QUERY = gql`
-  query {
-    allBooks {
-      title
-      published
-      author
-      genres
-    }
-  }
-`;
-
-const CREATE_BOOK_MUTATION = gql`
-  mutation createBook(
-    $title: String!
-    $author: String!
-    $published: Int!
-    $genres: [String!]!
-  ) {
-    addBook(
-      title: $title
-      author: $author
-      published: $published
-      genres: $genres
-    ) {
-      title
-      published
-      author
-      id
-      genres
-    }
-  }
-`;
-
-const EDIT_BIRTHYEAR_MUTATION = gql`
-  mutation editBirthyear($name: String!, $born: Int!) {
-    editAuthor(name: $name, setBornTo: $born) {
-      name
-      born
-      bookCount
-    }
-  }
-`;
+import {
+  ALL_AUTHORS_QUERY,
+  ALL_BOOKS_QUERY,
+  CREATE_BOOK_MUTATION,
+  EDIT_BIRTHYEAR_MUTATION,
+} from './queries';
 
 const App = () => {
   const [page, setPage] = useState('authors');

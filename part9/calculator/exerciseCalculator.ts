@@ -5,7 +5,7 @@ interface Arguments2 {
 
 const parseArguments2 = (args: string[]): Arguments2 => {
     if (args.length < 4) throw new Error('Not enough arguments');
-    const [first, second, target, ...dailyExerciseHours] = args;
+    const [_first, _second, target, ...dailyExerciseHours] = args;
 
 
 

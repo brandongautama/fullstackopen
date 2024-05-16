@@ -1,8 +1,10 @@
 import express from 'express';
 
 import { parseArguments, calculateBmi } from './bmiCalculator';
+import { parseArguments2, calculateExercises } from './exerciseCalculator';
 
 const app = express();
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
@@ -24,6 +26,32 @@ app.get('/bmi', (req, res) => {
       height: height,
       bmi: bmiRating,
     });
+  } catch (error: unknown) {
+    res.send({
+      error: 'malformatted parameters',
+    });
+  }
+});
+
+app.post('/exercises', (req, res) => {
+  console.log(req.body);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { daily_exercises, target } = req.body;
+  if (!daily_exercises || !target) {
+    res.send({
+      error: 'parameters missing',
+    });
+  }
+
+  try {
+    const args = parseArguments2([
+      'dummy',
+      'dummy',
+      target as string,
+      ...(daily_exercises as string[]),
+    ]);
+    const response = calculateExercises(args.dailyExerciseHours, args.target);
+    res.send(response);
   } catch (error: unknown) {
     res.send({
       error: 'malformatted parameters',

@@ -3,7 +3,7 @@ interface Arguments2 {
   target: number;
 }
 
-const parseArguments2 = (args: string[]): Arguments2 => {
+export const parseArguments2 = (args: string[]): Arguments2 => {
   if (args.length < 4) throw new Error('Not enough arguments');
   const [_first, _second, target, ...dailyExerciseHours] = args;
 
@@ -30,7 +30,7 @@ interface Result {
   ratingDescription: string;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   dailyExerciseHours: number[],
   target: number
 ): Result => {

@@ -2,6 +2,41 @@ import diagnoses from '../services/diagnoses';
 import { DiagnosesEntry, Entry, Patient } from '../types';
 import { useParams } from 'react-router-dom';
 
+/**
+ * Helper function for exhaustive type checking
+ */
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+const EntryRespectiveDetails = ({ entry }: { entry: Entry }) => {
+  switch (entry.type) {
+    case 'Hospital':
+      return (
+        <div>
+          Discharge criteria: {entry.discharge.criteria} date:{' '}
+          {entry.discharge.date}
+        </div>
+      );
+      break;
+    case 'OccupationalHealthcare':
+      return (
+        <div>
+          Employer: {entry.employerName} <br />
+          SickLeave: {entry.sickLeave?.startDate} - {entry.sickLeave?.endDate};
+        </div>
+      );
+      break;
+    case 'HealthCheck':
+      return <div>HealthCheckRating: {entry.healthCheckRating};</div>;
+      break;
+    default:
+      return assertNever(entry);
+  }
+};
+
 const EntryDetails = ({
   entry,
   diagnoses,
@@ -11,7 +46,9 @@ const EntryDetails = ({
 }) => {
   return (
     <div>
-      {entry.date} {entry.description}
+      {entry.date} {entry.description} <br />
+      diagnose by {entry.specialist}
+      <EntryRespectiveDetails entry={entry} />
       <ul>
         {entry.diagnosisCodes?.map(code => {
           const currentDiagnoses = diagnoses.find(d => d.code === code);

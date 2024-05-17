@@ -1,4 +1,3 @@
-import diagnoses from '../services/diagnoses';
 import { DiagnosesEntry, Entry, Patient } from '../types';
 import { useParams } from 'react-router-dom';
 
